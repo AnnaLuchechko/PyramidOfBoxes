@@ -24,7 +24,7 @@ class ViewController: UIViewController {
                                            heightScreenSide: heightScreenSide,
                                            interval: boxSize.height)
         
-        drawStairsOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: origin)
+        drawPyramidOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: origin)
     }
 
     func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
@@ -76,6 +76,18 @@ class ViewController: UIViewController {
             drawLineOfBoxes(boxCount: boxVerticalCount, boxSize: boxSize, origin: newOrigin)
             boxVerticalCount -= 1
             newOrigin.y -= boxSize.height + boxSize.width
+        }
+    }
+    
+    func drawPyramidOfBoxes(boxCount: Int, boxSize: CGSize, origin: CGPoint) {
+        var boxVerticalCount = boxCount
+        var newOrigin = origin
+
+        while boxVerticalCount > 0 {
+            drawLineOfBoxes(boxCount: boxVerticalCount, boxSize: boxSize, origin: newOrigin)
+            boxVerticalCount -= 1
+            newOrigin.y -= boxSize.height + boxSize.width
+            newOrigin.x = boxSize.height + (CGFloat(boxCount - boxVerticalCount) / 2.0) * (boxSize.width + origin.x)
         }
     }
 
