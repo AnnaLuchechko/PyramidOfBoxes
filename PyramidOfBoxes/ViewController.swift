@@ -13,37 +13,59 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let boxCount = 5    // 5 is for example. Enter your number.
+        drawPyramid(size: view.frame.size)
         
-        let widthScreenSide: CGFloat = view.frame.width
-        let heightScreenSide: CGFloat = view.frame.height
+    }
     
-        let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide,boxCount: boxCount)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
 
-        let origin: CGPoint = getBoxOrigin(widthScreenSide: widthScreenSide,
-                                           heightScreenSide: heightScreenSide,
-                                           interval: boxSize.height)
+        for view in self.view.subviews {    // Remove subviews while changing screen orientation
+            view.removeFromSuperview()
+        }
         
-        drawPyramidOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: origin)
+        drawPyramid(size: size)
+    }
+    
+    func drawPyramid(size: CGSize) {
+        let boxCount = 5    // 5 is for example. Enter your number
+            
+        let widthScreenSide: CGFloat = size.width
+        let heightScreenSide: CGFloat = size.height
+        
+        let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide, heightScreenSide: heightScreenSide, boxCount: boxCount)
+        let boxOrigin: CGPoint = getBoxOrigin(widthScreenSide: widthScreenSide,heightScreenSide: heightScreenSide,boxSize: boxSize)
+            
+        drawPyramidOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: boxOrigin)
     }
 
-    func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
+    func getBoxSizeAndInterval(widthScreenSide:CGFloat, heightScreenSide:CGFloat, boxCount:Int) -> CGSize {
         let divider = boxCount + 1
-        let boxSize = widthScreenSide / CGFloat(divider)
+        var boxSize = widthScreenSide / CGFloat(divider)
+        
+        if (widthScreenSide > heightScreenSide) {   // Landscape screen orientation
+            boxSize = heightScreenSide / CGFloat(divider)
+        }
+        
         let interval = boxSize / CGFloat(divider)
         
         return CGSize(width: boxSize, height: interval)
     }
     
-    func getBoxOrigin(widthScreenSide:CGFloat, heightScreenSide:CGFloat, interval: CGFloat) -> CGPoint {
+    func getBoxOrigin(widthScreenSide:CGFloat, heightScreenSide:CGFloat, boxSize: CGSize) -> CGPoint {
         let topSpace = (heightScreenSide - widthScreenSide) / 2
         var yOrigin = topSpace + widthScreenSide
+        var xOrigin = boxSize.height
         
-        if (yOrigin + (interval * 2) > heightScreenSide) {
-            yOrigin -= interval
+        if (widthScreenSide > heightScreenSide) {   // Landscape screen orientation
+            yOrigin = heightScreenSide - boxSize.height
+            xOrigin = (widthScreenSide - heightScreenSide) / 2 + boxSize.height
         }
-        let xOrigin = interval
         
+        if (yOrigin + boxSize.width > heightScreenSide) {
+            yOrigin -= boxSize.width
+        }
+
         return CGPoint(x: xOrigin, y: yOrigin)
     }
     
@@ -60,14 +82,14 @@ class ViewController: UIViewController {
     func drawLineOfBoxes(boxCount: Int, boxSize: CGSize, origin: CGPoint) {
         var boxDrawCount = 0
         var newOrigin: CGPoint = origin
-        
+
         while boxDrawCount < boxCount {
             drawBox(boxSize: boxSize, origin: newOrigin)
             boxDrawCount += 1
             newOrigin.x += boxSize.height + boxSize.width
         }
     }
-    
+
     func drawStairsOfBoxes(boxCount: Int, boxSize: CGSize, origin: CGPoint) {
         var boxVerticalCount = boxCount
         var newOrigin = origin
@@ -87,9 +109,7 @@ class ViewController: UIViewController {
             drawLineOfBoxes(boxCount: boxVerticalCount, boxSize: boxSize, origin: newOrigin)
             boxVerticalCount -= 1
             newOrigin.y -= boxSize.height + boxSize.width
-            newOrigin.x = boxSize.height + (CGFloat(boxCount - boxVerticalCount) / 2.0) * (boxSize.width + origin.x)
+            newOrigin.x = origin.x + (CGFloat(boxCount - boxVerticalCount) / 2.0) * (boxSize.width + boxSize.height)
         }
     }
-
 }
-
