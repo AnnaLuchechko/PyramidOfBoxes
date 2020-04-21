@@ -12,9 +12,22 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        let boxCount = 5    // 5 is for example. Enter your number.
+        
+        let widthScreenSide: CGFloat = view.frame.width
+        
+        let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide, boxCount: boxCount)
+        print(boxSize)
     }
 
-
+    func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
+        let divider = boxCount + 1
+        let boxSize = widthScreenSide / CGFloat(divider)
+        let interval = boxSize / CGFloat(divider)
+        
+        return CGSize(width: boxSize, height: interval)
+    }
+    
 }
 
