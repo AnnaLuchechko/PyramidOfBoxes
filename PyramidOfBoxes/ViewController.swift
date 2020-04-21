@@ -19,12 +19,12 @@ class ViewController: UIViewController {
         let heightScreenSide: CGFloat = view.frame.height
     
         let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide,boxCount: boxCount)
-        print(boxSize)
-        
+
         let origin: CGPoint = getBoxOrigin(widthScreenSide: widthScreenSide,
                                            heightScreenSide: heightScreenSide,
                                            interval: boxSize.height)
-        print(origin)
+        
+        drawBox(boxSize: boxSize, origin: origin)
     }
 
     func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
@@ -45,6 +45,16 @@ class ViewController: UIViewController {
         let xOrigin = interval
         
         return CGPoint(x: xOrigin, y: yOrigin)
+    }
+    
+    func drawBox(boxSize: CGSize, origin: CGPoint) {
+        let box = UIView()
+        box.frame.size.width = boxSize.width
+        box.frame.size.height = boxSize.width
+        box.frame.origin.x = origin.x
+        box.frame.origin.y = origin.y
+        box.backgroundColor = .magenta
+        self.view.addSubview(box)
     }
 
 }
