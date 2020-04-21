@@ -24,7 +24,7 @@ class ViewController: UIViewController {
                                            heightScreenSide: heightScreenSide,
                                            interval: boxSize.height)
         
-        drawBox(boxSize: boxSize, origin: origin)
+        drawLineOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: origin)
     }
 
     func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
@@ -55,6 +55,17 @@ class ViewController: UIViewController {
         box.frame.origin.y = origin.y
         box.backgroundColor = .magenta
         self.view.addSubview(box)
+    }
+    
+    func drawLineOfBoxes(boxCount: Int, boxSize: CGSize, origin: CGPoint) {
+        var boxDrawCount = 0
+        var newOrigin: CGPoint = origin
+        
+        while boxDrawCount < boxCount {
+            drawBox(boxSize: boxSize, origin: newOrigin)
+            boxDrawCount += 1
+            newOrigin.x += boxSize.height + boxSize.width
+        }
     }
 
 }
