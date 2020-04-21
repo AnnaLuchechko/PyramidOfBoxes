@@ -16,9 +16,15 @@ class ViewController: UIViewController {
         let boxCount = 5    // 5 is for example. Enter your number.
         
         let widthScreenSide: CGFloat = view.frame.width
-        
-        let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide, boxCount: boxCount)
+        let heightScreenSide: CGFloat = view.frame.height
+    
+        let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide,boxCount: boxCount)
         print(boxSize)
+        
+        let origin: CGPoint = getBoxOrigin(widthScreenSide: widthScreenSide,
+                                           heightScreenSide: heightScreenSide,
+                                           interval: boxSize.height)
+        print(origin)
     }
 
     func getBoxSizeAndInterval(widthScreenSide:CGFloat, boxCount:Int) -> CGSize {
@@ -29,5 +35,17 @@ class ViewController: UIViewController {
         return CGSize(width: boxSize, height: interval)
     }
     
+    func getBoxOrigin(widthScreenSide:CGFloat, heightScreenSide:CGFloat, interval: CGFloat) -> CGPoint {
+        let topSpace = (heightScreenSide - widthScreenSide) / 2
+        var yOrigin = topSpace + widthScreenSide
+        
+        if (yOrigin + (interval * 2) > heightScreenSide) {
+            yOrigin -= interval
+        }
+        let xOrigin = interval
+        
+        return CGPoint(x: xOrigin, y: yOrigin)
+    }
+
 }
 
