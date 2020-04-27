@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         
         let boxSize: CGSize = getBoxSizeAndInterval(widthScreenSide: widthScreenSide, heightScreenSide: heightScreenSide, boxCount: boxCount)
         let boxOrigin: CGPoint = getBoxOrigin(widthScreenSide: widthScreenSide,heightScreenSide: heightScreenSide,boxSize: boxSize)
-            
+        
         drawPyramidOfBoxes(boxCount: boxCount, boxSize: boxSize, origin: boxOrigin)
     }
 
@@ -80,12 +80,10 @@ class ViewController: UIViewController {
     }
     
     func drawLineOfBoxes(boxCount: Int, boxSize: CGSize, origin: CGPoint) {
-        var boxDrawCount = 0
         var newOrigin: CGPoint = origin
 
-        while boxDrawCount < boxCount {
+        for _ in 0..<boxCount {
             drawBox(boxSize: boxSize, origin: newOrigin)
-            boxDrawCount += 1
             newOrigin.x += boxSize.height + boxSize.width
         }
     }
@@ -94,7 +92,7 @@ class ViewController: UIViewController {
         var boxVerticalCount = boxCount
         var newOrigin = origin
 
-        while boxVerticalCount > 0 {
+        for _ in boxCount..<0 {
             drawLineOfBoxes(boxCount: boxVerticalCount, boxSize: boxSize, origin: newOrigin)
             boxVerticalCount -= 1
             newOrigin.y -= boxSize.height + boxSize.width
@@ -105,7 +103,7 @@ class ViewController: UIViewController {
         var boxVerticalCount = boxCount
         var newOrigin = origin
 
-        while boxVerticalCount > 0 {
+        for _ in 0..<boxVerticalCount {
             drawLineOfBoxes(boxCount: boxVerticalCount, boxSize: boxSize, origin: newOrigin)
             boxVerticalCount -= 1
             newOrigin.y -= boxSize.height + boxSize.width
